@@ -3,11 +3,13 @@ $ curl -s -X POST localhost:8080/employees \
   -d '{"firstName": "foo", "lastName": "bar", "dateOfBirth": "2023-05-04"}'
 {"id":1,"firstName":"foo","lastName":"bar","dateOfBirth":"2023-05-04"}
 
-
-
-curl -s -X POST localhost:8080/applicationuser \
-  -H "Content-Type: application/json" \
-  -d '{"email": "foo@foo.dk", "password": "hejhej123"}'
-
-
 curl -s localhost:8080/applicationuser
+
+
+sudo -u postgres psql
+
+sudo -u postgres createdb btcshop
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE btcshop TO admin;"
+
+psql -h localhost -U admin1 -d testdb
+/dt

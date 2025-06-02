@@ -1,7 +1,7 @@
 package btc_shop.controllers;
 
-import btc_shop.database.entities.AppUser;
-import btc_shop.database.interfaces.IAppUserRepository;
+import btc_shop.database.interfaces.IUserRepository;
+import btc_shop.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,21 +9,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AppUserController {
-    private final IAppUserRepository applicationUserRepository;
+public class UserController {
+    private final IUserRepository applicationUserRepository;
 
     @Autowired
-    public AppUserController(IAppUserRepository applicationUserRepository) {
+    public UserController(IUserRepository applicationUserRepository) {
         this.applicationUserRepository = applicationUserRepository;
     }
 
     @GetMapping("/applicationuser")
-    public Iterable<AppUser> findAllEmployees() {
+    public Iterable<User> findAllEmployees() {
         return this.applicationUserRepository.findAll();
     }
 
     @PostMapping("/applicationuser")
-    public AppUser addOneEmployee(@RequestBody AppUser applicationUser) {
+    public User addOneEmployee(@RequestBody User applicationUser) {
         return this.applicationUserRepository.save(applicationUser);
     }
 
