@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>btc-shop</artifactId>
+	<artifactId>auth-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>btc-shop</name>
-	<description>Demo project for Databse access in Spring Boot</description>
+	<name>auth-api</name>
+	<description>Demo project for Databse access and authentication in Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
