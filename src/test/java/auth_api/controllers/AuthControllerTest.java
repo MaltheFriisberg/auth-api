@@ -47,6 +47,39 @@ public class AuthControllerTest {
     }
 
     @Test
+    public void testThatItValidatesSignupPayload() throws Exception {
+
+        final String signinRequest = """
+            {
+              "usernameasd": "existingUser",
+              "passwordasd": "password123"
+            }
+            """;
+
+        mockMvc.perform(post("/api/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(signinRequest))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testThatItValidatesSigninPayload() throws Exception {
+
+        final String signinRequest = """
+            {
+              "usernameasd": "existingUser",
+              "passwordasd": "password123"
+            }
+            """;
+
+        mockMvc.perform(post("/api/auth/signin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(signinRequest))
+                .andExpect(status().isBadRequest());
+                //.andExpect(content().string("{\"token\":\"mock-jwt-token\",\"id\":0,\"username\":\"testUser\",\"email\":null,\"roles\":[\"ROLE_USER\",\"ROLE_ADMIN\"]}"));
+    }
+
+    @Test
     public void testThatItCanHandleAuthentication() throws Exception {
         UserDetailsImpl mockUserDetails = Mockito.mock(UserDetailsImpl.class);
         Mockito.when(mockUserDetails.getUsername()).thenReturn("testUser");
