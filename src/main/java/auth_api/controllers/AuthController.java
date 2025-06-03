@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import auth_api.exceptions.EmailAlreadyRegisteredException;
+import auth_api.exceptions.UserAlreadyRegisteredException;
 import auth_api.models.ERole;
 import auth_api.models.Role;
 import auth_api.models.User;
@@ -40,13 +42,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-
-    @Autowired
     IAuthService authService;
 
     @PostMapping("/signin")
@@ -61,6 +56,11 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 
+        try {
+            authService.registerUser(signUpRequest);
+        } catch (UserAlreadyRegisteredException | EmailAlreadyRegisteredException e ) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

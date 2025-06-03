@@ -2,7 +2,7 @@
 
 The purpose of this project is to showcase how webapi authentication can be managed with Spring Security and dtabase persistence with Postgres.
 
-# Database Setup
+## Database Setup
 
 This app requires a postgres database running on port 5432. The following database steps assumes a Linux environment:
 
@@ -25,3 +25,10 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE tesdb TO admin1;"
 Login to the database (enter password created earlier):
 
 psql -h localhost -U admin1 -d testdb
+
+
+## Unit testing
+
+Run the unit tests without triggering Hibernate:
+
+mvn test -Dspring.profiles.active=test
