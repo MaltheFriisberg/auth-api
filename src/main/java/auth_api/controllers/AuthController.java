@@ -16,6 +16,8 @@ import auth_api.response.JwtResponse;
 import auth_api.response.MessageResponse;
 import auth_api.security.jwt.JwtUtils;
 import auth_api.security.services.UserDetailsImpl;
+import auth_api.service.IAuthService;
+import auth_api.service.SignInResult;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +38,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    AuthenticationManager authenticationManager;
 
     @Autowired
     UserRepository userRepository;
@@ -49,23 +49,15 @@ public class AuthController {
     PasswordEncoder encoder;
 
     @Autowired
-    JwtUtils jwtUtils;
+    IAuthService authService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-                .toList();
-
+        SignInResult signInResult = authService.authenticateUser(loginRequest);
         return ResponseEntity
-                .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+                .ok(new JwtResponse(signInResult.jwt(), signInResult.userDetails().getId(),
+                        signInResult.userDetails().getUsername(), signInResult.userDetails().getEmail(), signInResult.roles()));
     }
 
     @PostMapping("/signup")
