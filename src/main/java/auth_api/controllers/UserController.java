@@ -2,29 +2,30 @@ package auth_api.controllers;
 
 import auth_api.database.interfaces.IUserRepository;
 import auth_api.models.User;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/user")
 public class UserController {
-    private final IUserRepository applicationUserRepository;
+    private final IUserRepository userRepository;
 
     @Autowired
-    public UserController(IUserRepository applicationUserRepository) {
-        this.applicationUserRepository = applicationUserRepository;
+    public UserController(IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @GetMapping("/applicationuser")
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public Iterable<User> findAllEmployees() {
-        return this.applicationUserRepository.findAll();
+        return this.userRepository.findAll();
     }
 
-    @PostMapping("/applicationuser")
-    public User addOneEmployee(@RequestBody User applicationUser) {
-        return this.applicationUserRepository.save(applicationUser);
+    @PostMapping()
+    public User addOneEmployee(@Valid @RequestBody User user) {
+        return this.userRepository.save(user);
     }
 
     @GetMapping("admin")
