@@ -2,6 +2,11 @@
 
 The purpose of this project is to showcase how webapi authentication can be managed with Spring Security and dtabase persistence with Postgres.
 
+
+## Docker
+
+This app is built with docker compose and requires a docker install to run.
+
 ## Database Setup
 
 This app requires a postgres database running on port 5432. The following database steps assumes a Linux environment:
