@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public Iterable<User> findAllEmployees() {
         return this.userRepository.findAll();
     }
@@ -26,10 +26,5 @@ public class UserController {
     @PostMapping()
     public User addOneEmployee(@Valid @RequestBody User user) {
         return this.userRepository.save(user);
-    }
-
-    @GetMapping("admin")
-    public String helloAdmin() {
-        return "Hello Admin";
     }
 }
